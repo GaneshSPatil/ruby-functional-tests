@@ -23,6 +23,9 @@ module Context
     DEVELOPMENT_MODE = !ENV['GO_PIPELINE_NAME']
 
     def start
+      mkdir_p "#{GoConstants::SERVER_DIR}/config"
+      cp 'resources/go.feature.toggles', "#{GoConstants::SERVER_DIR}/config/"
+
       if GoConstants::RUN_ON_DOCKER
         mkdir_p(GoConstants::TEMP_DIR)
         run_server_on_docker
@@ -32,8 +35,6 @@ module Context
       return if DEVELOPMENT_MODE && server_running?
 
       cp 'resources/with-java.sh', GoConstants::SERVER_DIR
-      mkdir_p "#{GoConstants::SERVER_DIR}/config"
-      cp 'resources/go.feature.toggles', "#{GoConstants::SERVER_DIR}/config/"
       mkdir_p "#{GoConstants::SERVER_DIR}/logs"
       log_location = "#{GoConstants::SERVER_DIR}/logs/output.log"
       out = File.open(log_location, 'w')
