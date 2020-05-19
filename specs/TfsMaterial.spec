@@ -44,7 +44,7 @@ Add resource "tfs" to an agent - Using Agents API
 * Invert material
 * Save Changes
 * On Stage settings page of pipeline "basic-tfs-pipeline" stage "defaultStage"
-* Mark stage success - On Stage settings page
+* Change approval type to "auto"
 * Save Changes
 
 * On Swift Dashboard Page
@@ -58,7 +58,7 @@ Add resource "tfs" to an agent - Using Agents API
 
 * On Swift Dashboard Page
 * On Stage settings page of pipeline "basic-tfs-pipeline" stage "defaultStage"
-* Mark stage manual - On Stage settings page
+* Change approval type to "manual"
 * Save Changes
 
 * On Swift Dashboard Page

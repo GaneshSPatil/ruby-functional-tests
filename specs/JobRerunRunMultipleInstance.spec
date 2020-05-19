@@ -16,7 +16,7 @@ tags: job-rerun,run-multiple-instance
 * On Job settings page of pipeline "pipeline-for-job-rerun-run-multiple-instance" stage "defaultStage" job "first"
 * Open "Job Settings" tab - On Job settings page
 * Check run multiple instance with "2"
-* Save Changes
+* Save Job Settings
 
 * On Swift Dashboard Page
 * Looking at pipeline "pipeline-for-job-rerun-run-multiple-instance" - On Swift Dashboard page
@@ -55,8 +55,8 @@ tags: job-rerun,run-multiple-instance
 
 * On Job settings page of pipeline "pipeline-for-job-rerun-run-multiple-instance" stage "defaultStage" job "first"
 * Open "Job Settings" tab - On Job settings page
-* set run type as "Run on one instance"
-* Save Changes
+* Set run instance count to "0" for job "first" in pipeline "pipeline-for-job-rerun-run-multiple-instance"
+* Save Job Settings
 
 * On stage details page "jobs" tab for "pipeline-for-job-rerun-run-multiple-instance" label "1" stage name "defaultStage" counter "2"
 * Rerun "first-runInstance-1" jobs

@@ -16,23 +16,27 @@
 
 module Pages
   class StageSettingsPage < GeneralSettingsPage
-    set_url "#{GoConstants::GO_SERVER_BASE_URL}/admin/pipelines{/pipeline_name}/edit#!{pipeline_name}{/stage_name}/stage_settings"
+    set_url "#{GoConstants::GO_SERVER_BASE_URL}/admin/pipelines{/pipeline_name}/stages{/stage_name}/settings"
 
-    element :stage_name, 'input[data-test-id="stage-name-input"]'
-    element :add_new_user_permission, 'button[data-test-id="add-user-permission-button"]'
-    element :add_new_role_permission, 'button[data-test-id="add-role-permission-button"]'
+    element :stage_name, '#stage_name'
     element :permission_user_name, 'input.permissions_user_name'
     element :permission_role_name, 'input.permissions_role_name'
 
-    element :add_new, 'button[data-test-id="add-jobs-button"]'
+    element :add_new, 'a.add_link'
 
-    element :job_name_on_popup, 'input[data-test-id="form-field-input-job-name"]'
-    element :task_on_stage_popup, 'select[data-test-id="form-field-input-task-type"]'
+    element :job_name_on_popup, '#job_name'
+    element :job_name_on_stage_popup, "input[name='stage[jobs][][name]']"
 
-    element :command_on_stage_popup, "input[data-test-id='form-field-input-command']"
-    element :command_args_on_stage_popup, "textarea[data-test-id='form-field-input-arguments']"
+    element :command_on_popup, "input[name='job[tasks][exec][command]']"
+    element :resources_on_popup, '#job_resources'
+    element :job_name_popup, "input[name='stage[jobs][][name]']"
+    element :command_on_stage_popup, "input[name='stage[jobs][][tasks][exec][command]']"
+    element :command_args_on_stage_popup, "textarea[name='stage[jobs][][tasks][exec][argListString]']"
 
-    element :save_job, "button[data-test-id='save-job']"
+    element :trigger_type_auto, '#auto'
+    element :trigger_type_manual, '#manual'
+
+    element :stage_on_popup, "input[name='stage[name]']"
 
     def job_resources(job)
       page.find('td a', text: job).ancestor('tr').find('td:nth-child(2)').text
@@ -47,8 +51,8 @@ module Pages
     end
 
     def delete_job(job)
-      page.find("i[data-test-id='#{job.downcase}-delete-icon']").click
-      page.find("button[data-test-id='primary-action-button']").click
+      page.find('td a', text: job).ancestor('tr').find('td.remove').find('form span.icon_remove').click
+      page.find("button[value='Proceed']").click
     end
 
     def job_present?(job)
@@ -57,9 +61,9 @@ module Pages
 
     def option_is_selected?(option)
       if option.eql? 'Inherit from the pipeline group'
-        page.find('input[data-test-id="radio-inherit"]').checked?
+        page.find('input#inherit_permissions').checked?
       else
-        page.find('input[data-test-id="radio-local"]').checked?
+        page.find('input#define_permissions').checked?
       end
     end
 
@@ -67,11 +71,11 @@ module Pages
       page.has_css?('div', text: message)
     end
 
-    def select_permission_option(option)
+    def selecct_permission_option(option)
       if option.eql? 'Inherit from the pipeline group'
-        page.find('input[data-test-id="radio-inherit"]').click
+        page.find('input#inherit_permissions').click
       else
-        page.find('input[data-test-id="radio-local"]').click
+        page.find('input#define_permissions').click
       end
     end
 
@@ -80,23 +84,20 @@ module Pages
     end
 
     def set_permission_user(user)
-      page.find('div[data-test-id="users"]')
-          .all('input[data-test-id="form-field-input-"]').each do |input_element|
+      page.all('input.permissions_user_name').each do |input_element|
         input_element.set user if input_element.value.blank?
       end
     end
 
     def set_permission_role(role)
-      page.find('div[data-test-id="roles"]')
-          .all('input[data-test-id="form-field-input-"]').each do |input_element|
+      page.all('input.permissions_role_name').each do |input_element|
         input_element.set role if input_element.value.blank?
       end
     end
 
     def inherited_users
       users = []
-      page.find('div[data-test-id="users"]')
-          .all('input[data-test-id="form-field-input-"]').each do |element|
+      page.all("input[name='stage[operateUsers][][name]']").each do |element|
         users.push(element.value) if element.disabled?
       end
       users
@@ -104,8 +105,7 @@ module Pages
 
     def inherited_roles
       roles = []
-      page.find('div[data-test-id="roles"]')
-          .all('input[data-test-id="form-field-input-"]').each do |element|
+      page.all("input[name='stage[operateRoles][][name]']").each do |element|
         roles.push(element.value) if element.disabled?
       end
       roles
@@ -113,20 +113,22 @@ module Pages
 
     def specified_users
       users = []
-      page.find('div[data-test-id="users"]')
-          .all('input[data-test-id="form-field-input-"]').each {|element| users.push(element.value)}
+      page.all('.permissions_user_name').each do |element|
+        users.push(element.value) unless element.value.blank?
+      end
       users
     end
 
     def specified_roles
-      roles = []
-      page.find('div[data-test-id="roles"]')
-          .all('input[data-test-id="form-field-input-"]').each {|element| roles.push(element.value)}
-      roles
+      users = []
+      page.all('.permissions_role_name').each do |element|
+        users.push(element.value) unless element.value.blank?
+      end
+      users
     end
 
     def auto_selected?
-      page.find('input[data-test-id="approval-checkbox"]', visible: false).checked?
+      page.find('#auto').checked?
     end
 
     def set_approval_type(type)
@@ -134,28 +136,16 @@ module Pages
     end
 
     def stage_has_approval_type?(stage, type)
-      page.all('tbody tr')
-          .find {|element| element.find('a').text === stage}
-          .find("td:nth-child(3)").text === type
+      page.find(".stage_#{stage}").has_css?('.approval_type', text: type)
     end
 
     def stage_has_jobs?(stage, jobs)
-      page.all('tbody tr')
-          .find {|element| element.find('a').text === stage}
-          .find("td:nth-child(4)").text === jobs
+      page.find(".stage_#{stage}").has_css?('.number_of_jobs', text: jobs)
     end
 
     def add_new_task(task)
-      page.find('select[data-test-id="form-field-input-"]').select task
+      page.find('#job_task_options').find(:option, task).select_option
     end
 
-    def error_message_for_stage_name
-      error_message_for_field(stage_name)
-    end
-
-    def set_trigger_type(value)
-      page.find('input[data-test-id="approval-checkbox"]', visible: false)
-          .sibling('label[data-test-id="switch-paddle"]').set(value)
-    end
   end
 end

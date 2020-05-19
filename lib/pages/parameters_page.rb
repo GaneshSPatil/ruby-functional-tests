@@ -1,5 +1,5 @@
 ##########################################################################
-# Copyright 2019 ThoughtWorks, Inc.
+# Copyright 2018 ThoughtWorks, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,15 @@
 # limitations under the License.
 ##########################################################################
 
-step 'On Admin Config XML page' do |_tmp|
-  admin_config_xml_page.load
-end
-
-step 'Click save - Already on config XML Tab' do
-  admin_config_xml_page.save_config
-end
+module Pages
+    class ParametersPage < AppBase
+      element  :save, ".finish"
+      
+      def set_parameter(index,env_name,env_value)
+        page.find("#params > table:nth-child(1) tr:nth-child(#{index}) td .environment_variable_name").set(env_name)
+        page.find("#params > table:nth-child(1) tr:nth-child(#{index}) td .environment_variable_value").set(env_value)
+        save.click
+      end
+  
+    end
+  end

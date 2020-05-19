@@ -30,7 +30,7 @@ Merge Conflict
 Successfull merge
 * Rename pipeline "middle-pipeline" to "middle-pipeline-new"
 * Click save - Already on config XML Tab
-* Verify the message "Saved successfully. The configuration was modified by someone else, but your changes were merged successfully." is present on rails page
+* Verify the message "Saved successfully. The configuration was modified by someone else, but your changes were merged successfully." is present
 
 Post validation failure
 * On Swift Dashboard Page

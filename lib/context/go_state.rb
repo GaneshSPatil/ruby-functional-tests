@@ -42,9 +42,9 @@ module Context
 
     def capture_healthstate(path)
       response = RestClient.get health_message_url, basic_configuration.header
-      File.open("#{path}/health_message.json", 'w') {|file| file.write(response.body)}
+      File.open("#{path}/health_message.json", 'w') { |file| file.write(response.body) }
     rescue StandardError => e
-      File.open("#{path}/health_message.json", 'w') {|file| file.write(e.message)}
+      File.open("#{path}/health_message.json", 'w') { |file| file.write(e.message) }
     end
 
     def capture_cruise_config(path)

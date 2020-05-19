@@ -14,12 +14,14 @@ Setup of contexts
 * On Job settings page of pipeline "edit-pipeline" stage "defaultStage" job "defaultJob"
 * Open "Artifacts" tab - On Job settings page
 * Add artifact of type "Build"
-* Save "build" artifact with values "source: build_source, destination: build_folder"
+* Save artifact with values "source: build_source, destination: build_folder" at "1"
 * Add artifact of type "Test"
-* Save "test" artifact with values "source: test_source, destination: test_folder"
+* Save artifact with values "source: test_source, destination: test_folder" at "2"
 
 * Looking at pipeline "edit-pipeline" - On Swift Dashboard page
 * Verify artifact with type as "build" source as "build_source" and destination as "build_folder"  exists for "defaultJob" in "defaultStage"
+
+
 
 teardown
 _______________

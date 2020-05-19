@@ -16,9 +16,9 @@ tags: Parameters_subsitution, wip
 
 * Enter new pipeline name as "child_pipeline"
 * Select material type as "Pipeline"
-* Set pipeline and stage as "$parent_pipeline$:second_stage"
+* Set pipeline and stage "parent_pipeline" "second_stage"
 * Set stage name as "stage_for_rake_target"
-* Select stage type as "manual"
+* Mark stage manual - On new pipeline wizard
 * Set job name as "job_for_rake_target"
 * Save pipeline "child_pipeline" successfully
 

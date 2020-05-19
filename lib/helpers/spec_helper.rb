@@ -56,6 +56,7 @@ require 'pages/stage_settings_page'
 require 'pages/pipeline_settings_page'
 require 'pages/vsm_page'
 require 'pages/pipeline_creation_wizard'
+require 'pages/parameters_page'
 require 'pages/config_xml_page'
 require 'pages/ldap_authorization_plugin'
 require 'pages/maintenance_mode_spa'
@@ -73,6 +74,7 @@ require 'pages/config_xml_snippets_page'
 require 'pages/admin_templates_page'
 require 'pages/new_environments_page'
 require 'pages/package_repository_page'
+require 'pages/package_material_page'
 require 'pages/new_pipeline_group_page'
 require 'pages/pluggable_scm_page.rb'
 
@@ -264,6 +266,10 @@ module Helpers
       Context::GoState.new
     end
 
+    def parameters_page
+      Pages::ParametersPage.new
+    end
+
     def config_repos_page
        Pages::ConfigReposPage.new
     end
@@ -296,8 +302,14 @@ module Helpers
       Pages::PackageRepositoryPage.new
     end
 
+    def package_material_page
+      Pages::PackageMaterialPage.new
+    end
+
     def pluggable_scm_page
       Pages::PluggableSCMPage.new
     end
+
+
   end
 end

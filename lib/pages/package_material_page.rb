@@ -14,10 +14,16 @@
 # limitations under the License.
 ##########################################################################
 
-step 'On Admin Config XML page' do |_tmp|
-  admin_config_xml_page.load
-end
+module Pages
+  class PackageMaterialPage < AppBase
 
-step 'Click save - Already on config XML Tab' do
-  admin_config_xml_page.save_config
+    element :package_repo_name, "#repository"
+    element :add_new_package, "#addNew"
+    element :package_material_name, "#material_package_definition_name"
+    element :package_material_spec, "#material_package_definition_configuration_0_configurationValue_value"
+    element :package_material_save, "button[value='SAVE']"
+
+
+
+  end
 end

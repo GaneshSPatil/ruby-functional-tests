@@ -36,7 +36,8 @@ make sure group admins don't see autocomplete for group
 * Enter pipeline name "cloned-some-pipeline-name"
 * Enter pipeline group name "group-with-no-pipelines" - Already On Clone Pipeline pop up
 * Save Cloning
-* Verify pipeline "cloned-some-pipeline-name" is paused with message "Scheduling is paused by group1Admin (Under construction)"
+
+* Verify pipeline "cloned-some-pipeline-name" is paused with message "Paused by group1Admin"
 
 * On Admin pipeline page
 
